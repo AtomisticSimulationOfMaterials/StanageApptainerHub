@@ -47,8 +47,10 @@ From: base.sif
     # Create build directory
     mkdir build && cd build
 
-    # Configure LAMMPS build with MPI, FFTW, no GPU, install prefix
-    cmake ../cmake
+    # Configure LAMMPS
+    cmake ../cmake \
+    -D BUILD_MPI=yes \
+    -D BUILD_OMP=yes
 
     # Build and install
     make -j$(nproc)
