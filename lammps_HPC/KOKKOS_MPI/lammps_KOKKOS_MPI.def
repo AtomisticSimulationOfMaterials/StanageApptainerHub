@@ -1,0 +1,100 @@
+# ============================================
+# LAMMPS Container Definition File
+# Author: Ethan L. Edmunds
+# Version: v1.0
+# Description: LAMMPS CPU MPI container with KOKKOS and Python support for MLIP simulations
+# Base: nvidia/cuda:12.5.1-devel-ubuntu24.04
+# ============================================
+
+Bootstrap: docker
+From: nvidia/cuda:12.5.1-devel-ubuntu24.04
+
+%labels
+    Author Ethan L. Edmunds
+    Version v1.0
+    Description LAMMPS CPU MPI container with KOKKOS support
+
+%post
+    # ---------------------------
+    # Noninteractive frontend
+    # ---------------------------
+    export DEBIAN_FRONTEND=noninteractive
+
+    # ---------------------------
+    # Install dependencies
+    # ---------------------------
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cmake \
+        git \
+        g++ \
+        python3 \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        wget \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+    # ---------------------------
+    # Create Python virtual environment
+    # ---------------------------
+    python3 -m venv /opt/venv
+    export PATH="/opt/venv/bin:$PATH"
+    /opt/venv/bin/pip install --upgrade pip
+    /opt/venv/bin/pip install numpy scipy mpi4py pandas ase matscipy atomman cython mpi4py
+
+    # ---------------------------
+    # Clone LAMMPS stable release
+    # ---------------------------
+    git clone --branch release https://github.com/lammps/lammps.git /opt/lammps
+    git config --system --add safe.directory /opt/lammps
+    cd /opt/lammps
+    git fetch --tags
+    git checkout tags/stable_22Jul2025
+
+    # ---------------------------
+    # Prepare build directory
+    # ---------------------------
+    mkdir build && cd build
+    wget -O libpace.tar.gz https://github.com/wcwitt/lammps-user-pace/archive/main.tar.gz
+
+    ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 || true
+    export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LIBRARY_PATH}
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LD_LIBRARY_PATH}
+
+    # ---------------------------
+    # Build LAMMPS with KOKKOS, MPI, and Python
+    # ---------------------------
+    cmake ../cmake \
+        -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_MPI=OFF \
+        -D PKG_KOKKOS=YES \
+        -D Kokkos_ENABLE_SERIAL=ON \
+        -D Kokkos_ARCH_AMPERE80=YES \
+        -D BUILD_SHARED_LIBS=YES \
+        -D BUILD_OMP=ON \
+        -D Kokkos_ENABLE_CUDA=YES \
+        -D CMAKE_INSTALL_PREFIX=$VIRTUAL_ENV \
+        -D PKG_MANYBODY=YES \
+        -D PKG_PYTHON=YES \
+        -D python_EXECUTABLE="/opt/venv/bin/python3"
+
+    cmake --build . -j 20
+    cmake --install .
+
+    # ---------------------------
+    # Install Python bindings
+    # ---------------------------
+    cd /opt/lammps/python
+    /opt/venv/bin/pip install .
+
+%environment
+    export PATH="/opt/venv/bin:$PATH"
+
+%runscript
+    echo "This container runs LAMMPS with MPI and KOKKOS support."
+    echo "Usage example: lmp -in input_script.in"
+    exec /opt/lammps/build/lmp "$@"
