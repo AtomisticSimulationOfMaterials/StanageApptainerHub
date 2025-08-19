@@ -23,7 +23,7 @@ def main():
     lmp.cmd.create_atoms(1, 'region', 'box')
 
     lmp.cmd.pair_style('eam/fs')
-    lmp.cmd.pair_coeff('*', '*', '../potentials/malerba.fs', 'Fe')
+    lmp.cmd.pair_coeff('*', '*', '../00_potentials/malerba.fs', 'Fe')
 
     lmp.cmd.timestep(0.001)
 
