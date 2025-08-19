@@ -27,9 +27,6 @@ def main():
 
     lmp.cmd.timestep(0.001)
 
-    lmp.cmd.neighbour(2.0, 'bin')
-    lmp.cmd.neigh_modify('delay', 0, 'every', 1, 'check', 'yes')
-    
     lmp.cmd.thermo(1000)
     lmp.cmd.thermo_style('custom', 'step', 'temp', 'etotal', 'press', 'vol')
 
