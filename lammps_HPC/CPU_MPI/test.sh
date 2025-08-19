@@ -19,7 +19,7 @@ CONTAINER_PATH=lmpcpu.sif
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
 # Run the container using srun, binding the host's MPI libraries
-srun apptainer run --bind $HOST_MPI_PATH:$HOST_MPI_PATH $CONTAINER_PATH -in example.lmp
+mpirun -np $ntasks apptainer run --bind $HOST_MPI_PATH:$HOST_MPI_PATH $CONTAINER_PATH -in ../00_examples/example.lmp
 
 
 

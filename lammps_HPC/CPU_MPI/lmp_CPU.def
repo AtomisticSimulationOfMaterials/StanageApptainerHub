@@ -1,33 +1,18 @@
 # ============================================
 # LAMMPS Container Definition File
 # Author: Ethan L. Edmunds
-# Version: v1.0
-# Description: LAMMPS CPU MPI container with Python support
+# Version: v2.0
+# Description: LAMMPS CPU MPI container with Python support and OpenMPI+PMIx
 # Base: ubuntu:24.04
 # ============================================
-
-# ---------------------------
-# Instructions
-# ---------------------------
-# 1. Build the image:
-#    apptainer build lammps.sif lammps.def
-#
-# 2. Build the image with full debug log:
-#    apptainer build --disable-cache lammps.sif lammps.def > build_lammps.log
-#
-# 3. Run the image interactively:
-#    apptainer shell lammps.sif
-#
-# 4. Run LAMMPS non-interactively:
-#    apptainer run lammps.sif -in input_script.in
 
 Bootstrap: docker
 From: ubuntu:24.04
 
 %labels
     Author Ethan L. Edmunds
-    Version v1.0
-    Description LAMMPS CPU MPI container
+    Version v2.0
+    Description LAMMPS CPU MPI container with OpenMPI+PMIx
 
 %post
     # ---------------------------
@@ -50,6 +35,12 @@ From: ubuntu:24.04
         python3-venv \
         wget \
         curl \
+        openmpi-bin \
+        libopenmpi-dev \
+        automake \
+        libtool \
+        pkg-config \
+        m4 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -59,7 +50,7 @@ From: ubuntu:24.04
     python3 -m venv /opt/venv
     export PATH="/opt/venv/bin:$PATH"
     /opt/venv/bin/pip install --upgrade pip
-    /opt/venv/bin/pip install numpy scipy mpi4py pandas ase matscipy atomman cython
+    /opt/venv/bin/pip install numpy scipy pandas ase matscipy atomman cython mpi4py
 
     # ---------------------------
     # Clone and checkout LAMMPS stable release
@@ -71,13 +62,13 @@ From: ubuntu:24.04
     git checkout tags/stable_22Jul2025
 
     # ---------------------------
-    # Build LAMMPS with no MPI support
+    # Build LAMMPS with MPI support
     # ---------------------------
     mkdir build && cd build
-
     cmake ../cmake \
         -D CMAKE_BUILD_TYPE=Release \
-        -D BUILD_MPI=OFF \
+        -D CMAKE_PREFIX_PATH=/usr/bin \
+        -D BUILD_MPI=ON \
         -D BUILD_SHARED_LIBS=ON \
         -D BUILD_OMP=ON \
         -D PKG_REPLICA=ON \
@@ -85,7 +76,7 @@ From: ubuntu:24.04
         -D PKG_PYTHON=ON \
         -D PYTHON_EXECUTABLE=/opt/venv/bin/python3
 
-    cmake --build . -j 20
+    cmake --build . -j $(nproc)
     cmake --install .
 
     # ---------------------------
@@ -95,10 +86,18 @@ From: ubuntu:24.04
     /opt/venv/bin/pip install .
 
 %environment
-    # Add Python venv to PATH
-    export PATH="/opt/venv/bin:$PATH"
+    # ---------------------------
+    # Add Python and LAMMPS to PATH
+    # ---------------------------
+    export PATH="/opt/venv/bin:/opt/lammps/build/bin:$PATH"
+    export MPI_HOME=/opt/openmpi
+    export PATH=$MPI_HOME/bin:$PATH
+    export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH
 
 %runscript
     echo "This container runs LAMMPS with MPI support."
     echo "Usage example: lmp -in input_script.in"
-    exec /opt/lammps/build/lmp "$@"
+    echo "Usage example: python3 input_script.py"
+    
+    # Execute the requested command
+    exec "$@"
