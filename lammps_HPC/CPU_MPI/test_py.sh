@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 #SBATCH --job-name=TEST_LAMMPS_CPU
 #SBATCH --mail-user=---@sheffield.ac.uk
 #SBATCH --time=00:10:00
