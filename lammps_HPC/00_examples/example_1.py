@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from mpi4py import MPI
 
-import lammps
+from lammps import lammps
 
 def main():
 
