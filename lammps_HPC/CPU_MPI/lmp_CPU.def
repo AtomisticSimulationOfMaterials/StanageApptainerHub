@@ -62,12 +62,19 @@ From: ubuntu:24.04
     git checkout tags/stable_22Jul2025
 
     # ---------------------------
+    # C and C++ compilers
+    # ---------------------------
+    export CC=/usr/bin/gcc
+    export CXX=/usr/bin/mpicxx
+
+    # ---------------------------
     # Build LAMMPS with MPI support
     # ---------------------------
     mkdir build && cd build
     cmake ../cmake \
         -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_PREFIX_PATH=/usr/bin \
+        -D CMAKE_C_COMPILER=/usr/bin/gcc \
+        -D CMAKE_CXX_COMPILER=/usr/bin/mpicxx.openmpi\
         -D BUILD_MPI=ON \
         -D BUILD_SHARED_LIBS=ON \
         -D BUILD_OMP=ON \
