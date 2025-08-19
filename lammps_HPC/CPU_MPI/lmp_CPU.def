@@ -97,7 +97,7 @@ From: ubuntu:24.04
     # Add Python and LAMMPS to PATH
     # ---------------------------
     export PATH="/opt/venv/bin:/opt/lammps/build:$PATH"
-    export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/opt/lammps/build:$MPI_HOME/lib:$LD_LIBRARY_PATH
 
 %runscript
       
