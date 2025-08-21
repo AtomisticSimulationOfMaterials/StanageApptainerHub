@@ -62,12 +62,6 @@ From: ubuntu:24.04
     git checkout tags/stable_22Jul2025
 
     # ---------------------------
-    # C and C++ compilers
-    # ---------------------------
-    export CC=/usr/bin/gcc
-    export CXX=/usr/bin/mpicxx
-
-    # ---------------------------
     # Build LAMMPS with MPI support
     # ---------------------------
     mkdir build && cd build
