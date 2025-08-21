@@ -1,0 +1,64 @@
+# ============================================
+# LAMMPS Container Definition File
+# Author: Ethan L. Edmunds
+# Version: v2.0
+# Description: LAMMPS CPU MPI container with Python support and OpenMPI+PMIx
+# Base: ubuntu:24.04
+# ============================================
+
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Author Ethan L. Edmunds
+    Version v2.0
+    Description LAMMPS CPU MPI container with OpenMPI+PMIx
+
+%post
+    # ---------------------------
+    # Noninteractive frontend
+    # ---------------------------
+    export DEBIAN_FRONTEND=noninteractive
+
+    # ---------------------------
+    # Install build dependencies
+    # ---------------------------
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        g++ \
+        cmake \
+        git \
+        python3 \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        wget \
+        curl \
+        openmpi-bin \
+        libopenmpi-dev \
+        automake \
+        libtool \
+        pkg-config \
+        m4 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+    # ---------------------------
+    # Create Python virtual environment
+    # ---------------------------
+    python3 -m venv /opt/venv
+    export PATH="/opt/venv/bin:$PATH"
+    /opt/venv/bin/pip install --upgrade pip
+    /opt/venv/bin/pip install numpy scipy pandas ase matscipy atomman cython mpi4py
+
+%environment
+    # ---------------------------
+    # Add Python and LAMMPS to PATH
+    # ---------------------------
+    export PATH="/opt/venv/bin:$PATH"
+
+%runscript
+      
+    # Execute the requested command
+    exec "$@"
