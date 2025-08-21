@@ -7,7 +7,7 @@
 # ============================================
 
 Bootstrap: docker
-From: ubuntu:24.04
+From: nvidia/cuda:12.5.1-devel-ubuntu24.04
 
 %labels
     Author Ethan L. Edmunds
@@ -64,24 +64,30 @@ From: ubuntu:24.04
     # ---------------------------
     # C and C++ compilers
     # ---------------------------
-    export CC=/usr/bin/gcc
-    export CXX=/usr/bin/mpicxx
+    ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 || true
+    export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LIBRARY_PATH}
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LD_LIBRARY_PATH}
 
     # ---------------------------
     # Build LAMMPS with MPI support
     # ---------------------------
     mkdir build && cd build
     cmake ../cmake \
+        -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
         -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_C_COMPILER=/usr/bin/gcc \
-        -D CMAKE_CXX_COMPILER=/usr/bin/mpicxx.openmpi\
         -D BUILD_MPI=ON \
-        -D BUILD_SHARED_LIBS=ON \
+        -D PKG_KOKKOS=YES \
+        -D Kokkos_ENABLE_SERIAL=ON \
+        -D Kokkos_ARCH_AMPERE80=YES \
+        -D BUILD_SHARED_LIBS=YES \
         -D BUILD_OMP=ON \
-        -D PKG_REPLICA=ON \
-        -D PKG_MANYBODY=ON \
-        -D PKG_PYTHON=ON \
-        -D PYTHON_EXECUTABLE=/opt/venv/bin/python3
+        -D Kokkos_ENABLE_CUDA=YES \
+        -D CMAKE_INSTALL_PREFIX=$VIRTUAL_ENV \
+        -D PKG_MANYBODY=YES \
+        -D PKG_MOLECULE=YES \
+        -D PKG_REPLICA=YES \
+        -D PKG_PYTHON=YES \
+        -D python_EXECUTABLE="/opt/venv/bin/python3"
 
     cmake --build . -j $(nproc)
     cmake --install .
