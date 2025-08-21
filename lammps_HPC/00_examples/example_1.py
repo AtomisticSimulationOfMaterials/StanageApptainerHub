@@ -29,7 +29,7 @@ def main():
 
     # ---------- Create Atomistic System ----------------------
     lmp.cmd.lattice('bcc', 2.866)
-    lmp.cmd.region('box', 'block', 0, 10, 0, 10, 0, 10)
+    lmp.cmd.region('box', 'block', 0, 40, 0, 40, 0, 40)
     lmp.cmd.create_box(1, 'box')
     lmp.cmd.create_atoms(1, 'box')
 

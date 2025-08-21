@@ -2,9 +2,9 @@
 #SBATCH --job-name=TEST_LAMMPS_CPU
 #SBATCH --mail-user=---@sheffield.ac.uk
 #SBATCH --time=00:10:00
-#SBATCH --mem-per-cpu=500MB
-#SBATCH --cpus-per-task=1
-#SBATCH --ntasks=4
+#SBATCH --partition=gpu
+#SBATCH --qos=gpu
+#SBATCH --gres=gpu:2
 
 module load OpenMPI/4.1.4-GCC-12.2.0
 
