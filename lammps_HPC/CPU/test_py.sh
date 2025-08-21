@@ -12,7 +12,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 export OMPI_MCA_btl=^openib
 
-CONTAINER_PATH=lmp_cpu.sif
+CONTAINER_PATH=lmp_CPU.sif
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
 srun apptainer exec \
