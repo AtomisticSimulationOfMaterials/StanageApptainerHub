@@ -55,7 +55,7 @@ From: ubuntu:24.04
     # ---------------------------
     # Clone and checkout LAMMPS stable release
     # ---------------------------
-    git clone --branch release https://github.com/lammps/lammps.git /opt/lammps
+    git clone --depth 1 --branch release https://github.com/lammps/lammps.git /opt/lammps
     git config --system --add safe.directory /opt/lammps
     cd /opt/lammps
     git fetch --tags
