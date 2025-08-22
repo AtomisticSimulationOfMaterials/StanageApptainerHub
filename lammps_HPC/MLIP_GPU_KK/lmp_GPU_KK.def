@@ -1,0 +1,121 @@
+# ============================================
+# LAMMPS Container Definition File
+# Author: Ethan L. Edmunds
+# Version: v2.0
+# Description: LAMMPS CPU MPI container with Python support and OpenMPI+PMIx
+# Base: ubuntu:24.04
+# ============================================
+
+Bootstrap: docker
+From: nvidia/cuda:12.5.1-devel-ubuntu24.04
+
+%labels
+    Author Ethan L. Edmunds
+    Version v2.0
+    Description LAMMPS CPU MPI container with OpenMPI+PMIx
+
+%post
+    # ---------------------------
+    # Noninteractive frontend
+    # ---------------------------
+    export DEBIAN_FRONTEND=noninteractive
+
+    # ---------------------------
+    # Install build dependencies
+    # ---------------------------
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        g++ \
+        cmake \
+        git \
+        python3 \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        wget \
+        curl \
+        openmpi-bin \
+        libopenmpi-dev \
+        automake \
+        libtool \
+        pkg-config \
+        m4 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+    # ---------------------------
+    # Create Python virtual environment
+    # ---------------------------
+    python3 -m venv /opt/venv
+    export PATH="/opt/venv/bin:$PATH"
+    /opt/venv/bin/pip install --upgrade pip
+    /opt/venv/bin/pip install numpy scipy pandas ase matscipy atomman cython mpi4py
+
+    # ---------------------------
+    # Clone and checkout LAMMPS stable release
+    # ---------------------------
+    git clone --depth 1 --branch release https://github.com/lammps/lammps.git /opt/lammps
+    git config --system --add safe.directory /opt/lammps
+    cd /opt/lammps
+    git fetch --tags
+    git checkout tags/stable_22Jul2025
+
+    # ---------------------------
+    # C and C++ compilers
+    # ---------------------------
+    ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 || true
+    export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LIBRARY_PATH}
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs:${LD_LIBRARY_PATH}
+
+    # ---------------------------
+    # Build LAMMPS with MPI support
+    # ---------------------------
+    mkdir build && cd build
+
+    wget -O libpace.tar.gz https://github.com/wcwitt/lammps-user-pace/archive/main.tar.gz
+
+    cmake ../cmake \
+        -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
+        -D MPI_C_COMPILER=/usr/bin/mpicc.openmpi \
+        -D MPI_CXX_COMPILER=/usr/bin/mpicxx.openmpi \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_MPI=ON \
+        -D PKG_KOKKOS=YES \
+        -D Kokkos_ENABLE_SERIAL=ON \
+        -D Kokkos_ARCH_AMPERE86=YES \
+        -D BUILD_SHARED_LIBS=YES \
+        -D BUILD_OMP=ON \
+        -D Kokkos_ENABLE_CUDA=YES \
+        -D CMAKE_INSTALL_PREFIX=$VIRTUAL_ENV \
+        -D PACELIB_MD5=$(md5sum libpace.tar.gz | awk '{print $1}') \
+        -D PKG_ML-UF3=YES \
+        -D PKG_ML-PACE=YES \
+        -D PKG_ML-SNAP=YES \
+        -D PKG_RIGID=YES \
+        -D PKG_MANYBODY=YES \
+        -D PKG_MOLECULE=YES \
+        -D PKG_EXTRA-PAIR=YES \
+        -D PKG_PYTHON=YES
+        -D python_EXECUTABLE="/opt/venv/bin/python3"
+
+    cmake --build . -j $(nproc)
+    cmake --install .
+
+    # ---------------------------
+    # Install Python bindings
+    # ---------------------------
+    cd /opt/lammps/python
+    /opt/venv/bin/pip install .
+
+%environment
+    # ---------------------------
+    # Add Python and LAMMPS to PATH
+    # ---------------------------
+    export PATH="/opt/venv/bin:/opt/lammps/build:$PATH"
+    export LD_LIBRARY_PATH=/opt/lammps/build:$MPI_HOME/lib:$LD_LIBRARY_PATH
+
+%runscript
+      
+    # Execute the requested command
+    exec "$@"
