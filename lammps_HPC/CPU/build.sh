@@ -12,3 +12,5 @@ module load OpenMPI/4.1.4-GCC-12.2.0
 
 # Build container
 apptainer build lmp_CPU.sif lmp_CPU.def
+
+
