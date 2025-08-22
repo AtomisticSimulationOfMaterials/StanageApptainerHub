@@ -74,7 +74,7 @@ From: nvidia/cuda:12.5.1-devel-ubuntu24.04
     mkdir build && cd build
     cmake ../cmake \
         -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
-        -D MPI_C_COMPILER=/opt/openmpi/bin/mpicc.openmpi \ 
+        -D MPI_C_COMPILER=/opt/openmpi/bin/mpicc.openmpi \
         -D MPI_CXX_COMPILER=/opt/openmpi/bin/mpicxx.openmpi \
         -D CMAKE_BUILD_TYPE=Release \
         -D BUILD_MPI=ON \
