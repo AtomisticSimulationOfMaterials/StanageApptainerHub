@@ -9,9 +9,9 @@
 
 # Paths
 CONTAINER_PATH=lmp_GPU_KK.sif
+INPUT=../00_examples/example_2.lmp
 
 # Run LAMMPS inside the Apptainer container
-srun apptainer exec --nv \
-     $CONTAINER_PATH \
-     lmp -k on g 2 -sf kk \
-     -in ../00_examples/example_2.lmp
+apptainer exec --nv lmp_GPU_KK.sif \
+     mpirun.openmpi -np 2 \
+     lmp -k on g 2 -sf kk -in $INPUT
