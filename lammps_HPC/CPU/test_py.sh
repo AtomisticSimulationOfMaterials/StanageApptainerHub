@@ -13,9 +13,11 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export OMPI_MCA_btl=^openib
 
 CONTAINER_PATH=lmp_CPU.sif
+INPUT=../00_examples/example_1.py
+
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
 srun apptainer exec \
      --bind $HOST_MPI_PATH:$HOST_MPI_PATH \
      $CONTAINER_PATH \
-     python ../00_examples/example_1.py
+     python $INPUT
