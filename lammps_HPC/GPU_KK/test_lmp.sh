@@ -11,8 +11,7 @@
 CONTAINER_PATH=lmp_GPU_KK.sif
 
 # Run LAMMPS inside the Apptainer container
-apptainer exec --nv \
+srun apptainer exec --nv \
      $CONTAINER_PATH \
-     mpirun.openmpi -np $SLURM_NTASKS \
-     lmp -k on g $SLURM_GRES -sf kk \
+     lmp -k on g 2 -sf kk \
      -in ../00_examples/example_2.lmp
