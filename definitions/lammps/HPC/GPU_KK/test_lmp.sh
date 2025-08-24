@@ -10,7 +10,7 @@
 
 # Paths
 CONTAINER_PATH=lmp_GPU_KK.sif
-INPUT=../../../../examples/lammps/scripts/example_1.lmp
+INPUT=../00_scripts/example_2.lmp
 
 # Run LAMMPS inside the Apptainer container
 apptainer exec --nv lmp_GPU_KK.sif \
