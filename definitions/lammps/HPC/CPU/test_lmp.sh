@@ -13,7 +13,7 @@ HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
 CONTAINER_PATH=lmp_CPU.sif
 
-INPUT=../examples/scripts/example_1.lmp
+INPUT=../00_scripts/example_1.lmp
 
 srun apptainer exec \
      --bind $HOST_MPI_PATH:$HOST_MPI_PATH \

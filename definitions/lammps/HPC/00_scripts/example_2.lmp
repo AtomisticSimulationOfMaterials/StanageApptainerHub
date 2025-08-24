@@ -21,7 +21,7 @@ create_atoms 1 box
 
 # ---------- Define Interatomic Potential -----------------
 pair_style eam/fs
-pair_coeff * * ../potentials/malerba.fs Fe
+pair_coeff * * ../00_potentials/malerba.fs Fe
 
 # Neighbor list settings
 neighbor 2.0 bin
