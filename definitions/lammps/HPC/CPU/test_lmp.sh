@@ -16,7 +16,7 @@ export OMPI_MCA_btl=^openib
 
 # Paths
 CONTAINER_PATH=lmp_CPU.sif
-INPUT=..tests/lammps/examples/example_1.lmp
+INPUT=../../../../examples/lammps/scripts/example_1.lmp
 
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
