@@ -1,24 +1,37 @@
 # StanageApptainerHub
-A repository of Apptainer defintion files for building containerised software on the Univeristy of Sheffield's Stanage HPC cluster.
+
+A repository of [Apptainer](https://apptainer.org/) definition files for building containerised software on the University of Sheffield’s **Stanage** HPC cluster.
+
+---
 
 ## Introduction and Motivation
-- HPC is a very powerful technology for efficient use of scientific codes.
-- It allows us to distribute processes in software to many many processes that can belong to CPUs or GPUs.
-- The University of Sheffield has two HPC systems: Stanage and Bessemer.
-- We mainly use Stanage as that has the best specs and is the newest system. Also, Bessemer is being decomissioned at some point.
 
-- The HPC is open to all researchers and students at the University.
-- This is good.
-- However there are several issues we face when making this tool available to everyone.
-- Diverse user backgrounds (from begineer to advanced)
-- Confilting software versions and dependencies
-- (Ocassionally) limited support staff for environment troubleshooting and technical support
+High-Performance Computing (HPC) is a powerful technology that enables researchers to run scientific codes efficiently by distributing workloads across many CPU cores and GPUs.  
 
-- To address this we are building a repository of apptainer definitions. This will allow us to get around some of these issues.
-- Provide reproducible environments. --> We can standardise use of software across the research group. --> When sharing our work with people from other organisations, they can easily find out what version of software we are using to replicate our work/build off of it.
-- Simplify software setup for new users
-- Reduce dependency conflicats on shared infracstructure
-- Allow research workflows to be portable across different HPC systems.
+At the University of Sheffield, there are currently two HPC systems: **Stanage** and **Bessemer**. Our group primarily uses **Stanage** since it offers the best specifications and is the most recent system. Bessemer is scheduled for decommissioning in the near future.  
+
+While HPC provides enormous opportunities for research, making it accessible to all researchers and students also introduces challenges:
+
+- **Diverse user backgrounds** – ranging from beginners to advanced users  
+- **Conflicting software versions and dependencies** – difficult to manage on shared infrastructure  
+- **Limited technical support** – environment troubleshooting can take significant time and effort  
+
+### The environment management problem
+
+One of the biggest obstacles in HPC usage is **managing consistent and reproducible environments**. Researchers often need specific versions of software and libraries, but installing these on a shared system can cause conflicts and waste valuable research time.  
+
+### Our solution: Apptainer definition files
+
+This repository provides **Apptainer definition files** for commonly used software in our research group. By standardising environments through containerisation, we aim to:
+
+- **Provide reproducible environments** – ensuring consistent results across projects and collaborators  
+- **Simplify setup for new users** – no need for complex dependency installations  
+- **Reduce conflicts on shared infrastructure** – containers isolate software environments  
+- **Improve portability of workflows** – making it easy to run the same software stack on different HPC systems or external collaborations  
+
+---
+
+This repository is intended as a growing hub of containerised definitions that will make HPC usage on Stanage more reliable, reproducible, and accessible to everyone.
 
 # Apptainer
 
