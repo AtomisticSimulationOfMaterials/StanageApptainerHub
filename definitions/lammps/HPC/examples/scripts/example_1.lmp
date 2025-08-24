@@ -5,6 +5,9 @@
 # Purpose: Equilibrate a BCC Iron system using NPT dynamics
 # ----------------------------------------------------------
 
+# Print path
+shell pwd
+
 # ---------- Initialize Simulation ------------------------
 clear
 units metal
