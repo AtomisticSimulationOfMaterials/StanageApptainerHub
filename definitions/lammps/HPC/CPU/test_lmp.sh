@@ -7,21 +7,23 @@
 #SBATCH --ntasks=4
 
 module load OpenMPI/4.1.4-GCC-12.2.0
-
-# Set number of threads per task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-# Suppress OpenFabrics (InfiniBand) warnings
-export OMPI_MCA_btl=^openib
+# ---------------- Determine script directory ----------------
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Paths
-CONTAINER_PATH=lmp_CPU.sif
-INPUT=../../../../examples/lammps/scripts/example_1.lmp
+# Container and input paths (absolute)
+CONTAINER_PATH=$(realpath "$SCRIPT_DIR/lmp_CPU.sif")
+INPUT=$(realpath "$SCRIPT_DIR/../../../../examples/lammps/scripts/example_1.lmp")
+POTENTIALS_DIR=$(realpath "$SCRIPT_DIR/../../../../examples/lammps/potentials")
 
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
-# Run LAMMPS inside the Apptainer container
+# Bind MPI libraries and potentials folder
+BIND_PATHS="$HOST_MPI_PATH:$HOST_MPI_PATH,$POTENTIALS_DIR:$POTENTIALS_DIR"
+
+# ---------------- Run LAMMPS ----------------
 srun apptainer exec \
-     --bind $HOST_MPI_PATH:$HOST_MPI_PATH \
+     --bind $BIND_PATHS \
      $CONTAINER_PATH \
      lmp -in $INPUT
