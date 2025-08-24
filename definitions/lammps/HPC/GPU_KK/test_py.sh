@@ -15,5 +15,5 @@ INPUT=../../../../examples/lammps/scripts/example_2.py
 # Run LAMMPS inside the Apptainer container
 # NOT WORKING
 apptainer exec --nv lmp_GPU_KK.sif \
-     mpirun.openmpi -np 2 \
-     lmp -k on g 2 -sf kk -in $INPUT
+     mpirun.openmpi -np $SLURM_NTASKS \
+     python $INPUT
