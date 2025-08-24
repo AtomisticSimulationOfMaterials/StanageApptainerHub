@@ -83,4 +83,4 @@ STANAGEAPPTAINERHUB/
 
 | Software   | Version(s) Available | Containerised (Apptainer) | Notes |
 |------------|----------------------|---------------------------|-------|
-| LAMMPS     | 3Mar2020, 29Sep2021  | Yes                       | CPU, GPU, and MLIP builds available |
+| LAMMPS     | 3Mar2020 | Yes                       | CPU, GPU, and MLIP builds available |
