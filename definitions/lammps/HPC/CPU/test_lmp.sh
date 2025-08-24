@@ -7,19 +7,13 @@
 #SBATCH --ntasks=4
 
 module load OpenMPI/4.1.4-GCC-12.2.0
-
-# Set number of threads per task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-# Paths
-CONTAINER_PATH=*/StanageApptainerHub/definitions/lammps/HPC/CPU/lmp_CPU.sif
-
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+CONTAINER_PATH="$SCRIPT_DIR/lmp_CPU.sif"
+INPUT="$SCRIPT_DIR/../../../../examples/lammps/scripts/example_1.lmp"
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
-# Enter directory of the example script
-cd ../../../../examples/lammps/scripts
-
-# Run LAMMPS inside the Apptainer container
 srun apptainer exec \
      --bind $HOST_MPI_PATH:$HOST_MPI_PATH \
      $CONTAINER_PATH \
