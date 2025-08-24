@@ -4,7 +4,7 @@ A repository of [Apptainer](https://apptainer.org/) definition files for buildin
 
 ---
 
-## Introduction and Motivation
+# 1. Introduction and Motivation
 
 High-Performance Computing (HPC) is a powerful technology that enables researchers to run scientific codes efficiently by distributing workloads across many CPU cores and GPUs.  
 
@@ -33,7 +33,7 @@ This repository provides **Apptainer definition files** for commonly used softwa
 
 This repository is intended as a growing hub of containerised definitions that will make HPC usage on Stanage more reliable, reproducible, and accessible to everyone.
 
-# Apptainer
+# 2. Apptainer
 
 [Apptainer](https://apptainer.org/) (formerly known as Singularity) is an open-source container platform designed for scientific and high-performance computing (HPC). Unlike Docker, which is often used in cloud and microservice environments, Apptainer focuses on reproducibility, mobility, and security for research workflows.
 
@@ -48,11 +48,12 @@ This makes Apptainer an ideal tool for academic and research computing, where co
 
 For more information on Apptainer, please refer to their [documentation](https://apptainer.org/docs/user/main/index.html)
 
-## How it works (A introduction)
+### How it works (WIP)
 
+# 3. Repository Structure
 
-# Structure
+# 4. Software Status
 
-# Software
-
-# Instructions
+| Software   | Version(s) Available | Containerised (Apptainer) | Notes |
+|------------|----------------------|---------------------------|-------|
+| LAMMPS     | 3Mar2020, 29Sep2021  | Yes                       | CPU, GPU, and MLIP builds available |
