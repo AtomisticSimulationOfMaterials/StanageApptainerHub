@@ -1,5 +1,5 @@
 # ----------------------------------------------------------
-# Thermalization Script for BCC Iron
+# Thermalization Script for BCC Iron - Kokkos
 # Author: Ethan L. Edmunds
 # Year: 2025
 # Purpose: Equilibrate a BCC Iron system using NPT dynamics
@@ -17,7 +17,7 @@ from lammps import lammps
 def main():
 
     # Initialize LAMMPS
-    lmp = lammps()
+    lmp = lammps(cmdargs=['-k','on','g','2','-sf','kk'])
 
     # ---------- Initialize Simulation ------------------------
     lmp.cmd.clear()
@@ -35,7 +35,7 @@ def main():
 
     # ---------- Define Interatomic Potential -----------------
     lmp.cmd.pair_style('eam/fs')
-    lmp.cmd.pair_coeff('*', '*', '../00_potentials/malerba.fs', 'Fe')
+    lmp.cmd.pair_coeff('*', '*', '../potentials/malerba.fs', 'Fe')
 
     # Neighbor list settings
     lmp.cmd.neighbor(2.0, 'bin')

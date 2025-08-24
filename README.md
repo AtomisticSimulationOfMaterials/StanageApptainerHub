@@ -52,6 +52,33 @@ For more information on Apptainer, please refer to their [documentation](https:/
 
 # 3. Repository Structure
 
+```bash
+STANAGEAPPTAINERHUB/
+│
+├── definitions/              # Apptainer definition files for different software
+│   ├── lammps/               # LAMMPS builds
+│   │   ├── HPC/              # HPC-optimised definitions (CPU, GPU, MLIP, etc.)
+│   │   ├── LOCAL/            # Optional local builds for testing
+│   │   └── README.md         # Notes on how to use LAMMPS containers
+│   │
+│   └── (other software…)     # Add future tools here (e.g. GROMACS, QE)
+│
+├── examples/                 # Example scripts and data
+│   ├── lammps/               # Example LAMMPS inputs, potentials, job scripts
+│   └── (other software…)     
+│
+├── tests/                    # Minimal test definitions & validation builds
+│
+├── docs/                     # Documentation (optional but recommended)
+│   ├── build_your_own.md     # Guide for writing your own definition files
+│   ├── lammps.md             # Instructions on how to use apptainer with LAMMPS
+│   └── (other software...)   # Instructions on how to use other software
+│
+├── .gitignore
+├── LICENSE                   
+└── README.md
+```
+
 # 4. Software Status
 
 | Software   | Version(s) Available | Containerised (Apptainer) | Notes |
