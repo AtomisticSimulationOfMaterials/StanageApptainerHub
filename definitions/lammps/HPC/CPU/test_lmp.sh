@@ -16,6 +16,5 @@ CONTAINER_PATH=lmp_CPU.sif
 INPUT=../00_scripts/example_1.lmp
 
 srun apptainer exec \
-     --bind $HOST_MPI_PATH:$HOST_MPI_PATH \
      $CONTAINER_PATH \
      lmp -in $INPUT
