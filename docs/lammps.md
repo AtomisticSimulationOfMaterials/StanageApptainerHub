@@ -83,7 +83,7 @@ srun apptainer exec \
 ```
 
 ### GPU (KOKKOS) Versions
-With apptainer we can also configure versions of LAMMPS that use KOKKOS, which we would need to run our simulations using GPUs instead of CPUs. When using GPUs, the procedure for setting up simulations differs slightly. Below is an example for running 
+With apptainer we can also configure versions of LAMMPS that use KOKKOS, which we would need to run our simulations using GPUs instead of CPUs. This is particularly useful when using machine learned interatomic potentials (MLIPs). When using GPUs, the procedure for setting up simulations differs slightly, as per the [HPC's documentation](https://docs.hpc.shef.ac.uk/en/latest/stanage/GPUComputingStanage.html#gsc.tab=0) Below is an example for running a LAMMPS script, to run LAMMPS using 2 GPUs.
 
 ```bash
 #!/bin/bash
