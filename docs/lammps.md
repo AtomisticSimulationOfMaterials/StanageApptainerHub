@@ -83,6 +83,7 @@ srun apptainer exec \
 ```
 
 ### GPU (KOKKOS) Versions
+With apptainer we can also configure versions of LAMMPS that use KOKKOS, which we would need to run our simulations using GPUs instead of CPUs. When using GPUs, the procedure for setting up simulations differs slightly. Below is an example for running 
 
 ```bash
 #!/bin/bash
@@ -102,7 +103,7 @@ INPUT=../00_scripts/example_2.lmp
 # Run LAMMPS inside the Apptainer container
 apptainer exec --nv lmp_GPU_KK.sif \
      mpirun.openmpi -np $SLURM_NTASKS \
-     lmp -k on g 2 -sf kk -in $INPUT
+     lmp -k on g $SLURM_NTASKS -sf kk -in $INPUT
 ```
 
 ```bash
