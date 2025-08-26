@@ -10,6 +10,6 @@ CONTAINER_PATH=lmp_CPU.sif
 
 INPUT=../00_scripts/example_1.lmp
 
-srun apptainer exec \
-     $CONTAINER_PATH \
+apptainer exec $CONTAINER_PATH \
+     mpirun.openmpi -np $SLURM_NTASKS \
      lmp -in $INPUT
