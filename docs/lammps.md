@@ -4,6 +4,8 @@ The Large-scale Atomic/Molecular Massively Parallel Simulator (LAMMPS) is a popu
 
 > **Note:** All LAMMPS builds in this repo are built with MPI support.
 
+> **Note:** All LAMMPS builds in this repo are built with Python support.
+
 ## 1. How to build LAMMPS
 
 Each of the apptainer definition files come with their own *build.sh* script. Each of these scripts are designed to call apptainer and build a apptainer container using the definition file. An example is below:
@@ -36,6 +38,8 @@ Generally, running simulations with LAMMPS goes like this:
 
 1) We load the OpenMPI module from Stanage
 2) We get the path to Stanage's OpenMPI executable 
+3) We create paths for the apptainer container and the lammps input script
+4) We tell apptainer to process our LAMMPS input script using the LAMMPS executable inside of the apptainer container
 
 ```bash
 #!/bin/bash
@@ -52,7 +56,6 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
 CONTAINER_PATH=lmp_CPU.sif
-
 INPUT=../00_scripts/example_1.lmp
 
 srun apptainer exec \
@@ -60,6 +63,17 @@ srun apptainer exec \
      $CONTAINER_PATH \
      lmp -in $INPUT
 ```
+
+The bottom command (srun ...) is the command in which we are executing LAMMPS. It is slightly different to a command that we would pass if we were using Stanage's version of LAMMPS. Below is a brief explanation of each part of the command.
+
+```bash
+srun apptainer exec \ # Tell Slurm to find apptainer and that we want to execute something
+     --bind $HOST_MPI_PATH:$HOST_MPI_PATH \ # Tell apptainer to use Stanage's MPI
+     $CONTAINER_PATH \ # Tell Apptainer which container we want to use
+     lmp -in $INPUT # Tell apptainer what command we want to run inside of the container
+```
+
+If you have written your input scripts using Python (which sometimes is very very useful), you can pass that script as an input in a similar fashion. An example command to execute the script is below. Note that nothing changes apart from the last part of the command, where we are using the same container, but just calling python instead of LAMMPS.
 
 ```bash
 srun apptainer exec \
