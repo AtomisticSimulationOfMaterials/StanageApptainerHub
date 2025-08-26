@@ -61,13 +61,7 @@ STANAGEAPPTAINERHUB/
 │   │   ├── LOCAL/            # Optional local builds for testing
 │   │   └── README.md         # Notes on how to use LAMMPS containers
 │   │
-│   └── (other software…)     # Add future tools here (e.g. GROMACS, QE)
-│
-├── examples/                 # Example scripts and data
-│   ├── lammps/               # Example LAMMPS inputs, potentials, job scripts
-│   └── (other software…)     
-│
-├── tests/                    # Minimal test definitions & validation builds
+│   └── (other software…)     # Add future tools here (e.g. GROMACS, QE)                  # Minimal test definitions & validation builds
 │
 ├── docs/                     # Documentation (optional but recommended)
 │   ├── build_your_own.md     # Guide for writing your own definition files
