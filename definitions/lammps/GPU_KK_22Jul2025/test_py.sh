@@ -6,7 +6,7 @@
 #SBATCH --qos=gpu
 #SBATCH --gres=gpu:2
 #SBATCH --ntasks=2
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=2
 
 # Paths
 CONTAINER_PATH=lmp_KK_22Jul2025.sif
