@@ -11,6 +11,4 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 module load OpenMPI/4.1.4-GCC-12.2.0
 
 # Build container
-apptainer build lmp_CPU.sif lmp_CPU.def
-
-
+apptainer build lmp_KK_22Jul2025.sif lmp_KK_22Jul2025.def

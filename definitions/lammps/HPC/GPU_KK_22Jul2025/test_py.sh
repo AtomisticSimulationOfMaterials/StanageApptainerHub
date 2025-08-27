@@ -9,10 +9,10 @@
 #SBATCH --cpus-per-task=1
 
 # Paths
-CONTAINER_PATH=lmp_KK.sif
+CONTAINER_PATH=lmp_KK_22Jul2025.sif
 INPUT=../00_scripts/example_2.py
 
 # Run LAMMPS inside the Apptainer container
 apptainer exec --nv $CONTAINER_PATH \
      mpirun.openmpi -np $SLURM_NTASKS \
-     lmp -k on g $SLURM_NTASKS -sf kk -in $INPUT
+     python $INPUT

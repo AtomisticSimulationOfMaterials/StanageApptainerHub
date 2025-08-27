@@ -11,7 +11,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 HOST_MPI_PATH=/opt/apps/testapps/el7/software/staging/OpenMPI/4.1.4-GCC-12.2.0
 
-CONTAINER_PATH=lmp_CPU.sif
+CONTAINER_PATH=lmp_CPU_22Jul2025.sif
 
 INPUT=../00_scripts/example_1.py
 
