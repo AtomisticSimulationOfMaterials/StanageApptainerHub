@@ -17,7 +17,7 @@ from lammps import lammps
 def main():
 
     # Initialize LAMMPS
-    lmp = lammps(cmdargs=['-k','on','g','2','-sf','kk'])
+    lmp = lammps(cmdargs=['-k','on','g','1','-sf','kk'])
 
     # ---------- Initialize Simulation ------------------------
     lmp.cmd.clear()
