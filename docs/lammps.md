@@ -1,10 +1,31 @@
 # LAMMPS
 
+(Written by Ethan, ChatGPT and Gemini)
+
 The Large-scale Atomic/Molecular Massively Parallel Simulator (LAMMPS) is a popular tool for conducting molecular dynamics simulations. The code is maintained by Sandia National Labs. For more information, refer to either the [LAMMPS webpage](https://www.lammps.org/#gsc.tab=0) or [documentation](https://docs.lammps.org/).
+
+### Available Software
+
+
 
 > **Note:** All LAMMPS builds in this repo are built with MPI support.
 
+#### LAMMPS
+
+ Version  | Build Type         | Enabled Packages       | Disabled Packages | Def File Location               | Notes |
+|----------|--------------------|------------------------|-------------------|---------------------------------|-------|
+| 22Jul2025   | CPU, MPI | PKG1, PKG2, PKG3       | PKG_A, PKG_B      | `./defs/vX.X.X/build.def`       | e.g., default test build |
+| 22Jul2025   | GPU (KOKKOS), MPI       | PKG1, PKG2             | PKG_A             | `./defs/vX.X.X/mpi_openmp.def`  | optimized for HPC |
+| 22Jul2025   | GPU (KOKKOS), MPI          | PKG_GPU, KSPACE        | REAXFF            | `./defs/vX.X.X/gpu_build.def`   | CUDA-enabled build |
+
+> **Note:** All LAMMPS builds in this repo are built with MPI support.
+
+
+#### Python
+
 > **Note:** All LAMMPS builds in this repo are built with Python support.
+
+
 
 ## 1. How to build LAMMPS
 
@@ -120,4 +141,4 @@ With Python there is a caveate, as we need to tell LAMMPS (through Python) to us
 
 ## 3. Supplementary Information
 
-### LAMMPS Build Process
+### LAMMPS Build Process (Definition File Structure)
